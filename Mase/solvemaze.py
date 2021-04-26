@@ -10,6 +10,8 @@ def main():
     else:
         print("Path not found....")
     print(maze)
+    maze.reset()
+    print(maze)
 
 
 def build_maze(filename):

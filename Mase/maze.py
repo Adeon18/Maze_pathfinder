@@ -59,40 +59,45 @@ class Maze:
                 path.push(deepcopy(curr_pos))
                 self._mark_path(curr_pos.row, curr_pos.col)
                 curr_pos.row, curr_pos.col = curr_pos.row - 1, curr_pos.col
-                print("up..")
+                # print("up..")
             elif self._valid_move(curr_pos.row, curr_pos.col + 1):
                 path.push(deepcopy(curr_pos))
                 self._mark_path(curr_pos.row, curr_pos.col)
                 curr_pos.row, curr_pos.col = curr_pos.row, curr_pos.col + 1
-                print("right..")
+                # print("right..")
             elif self._valid_move(curr_pos.row + 1, curr_pos.col):
                 path.push(deepcopy(curr_pos))
                 self._mark_path(curr_pos.row, curr_pos.col)
                 curr_pos.row, curr_pos.col = curr_pos.row + 1, curr_pos.col
-                print("down..")
+                # print("down..")
             elif self._valid_move(curr_pos.row, curr_pos.col - 1):
                 path.push(deepcopy(curr_pos))
                 self._mark_path(curr_pos.row, curr_pos.col)
                 curr_pos.row, curr_pos.col = curr_pos.row, curr_pos.col - 1
-                print("left..")
+                # print("left..")
             else:
-                print("wrong..")
+                # print("wrong..")
                 self._mark_tried(curr_pos.row, curr_pos.col)
                 old_pos = path.pop()
                 curr_pos.row, curr_pos.col = old_pos.row, old_pos.col
-                print(curr_pos)
+                # print(curr_pos)
 
             
             if self._exit_found(curr_pos.row, curr_pos.col):
                 self._mark_path(curr_pos.row, curr_pos.col)
                 return True
-        
-            print(self, flush=True)
+            if curr_pos.row == self._start_cell.row and curr_pos.col == self._start_cell.col:
+                self._mark_tried(curr_pos.row, curr_pos.col)
+                return False
+            # print(self, flush=True)
 
 
     def reset(self):
         """Resets the maze by removing all "path" and "tried" tokens."""
-        pass
+        for i in range(self.num_rows()):
+            for j in range(self.num_cols()):
+                if self._maze_cells[i, j] == self.TRIED_TOKEN or self._maze_cells[i, j] == self.PATH_TOKEN:
+                    self._maze_cells[i, j] = None
 
     def __str__(self):
         """Returns a text-based representation of the maze."""
