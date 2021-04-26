@@ -1,4 +1,5 @@
 """Implemention of the Maze ADT using a 2-D array."""
+from copy import deepcopy
 from arrays import Array2D
 from lliststack import Stack
 
@@ -50,40 +51,42 @@ class Maze:
         path = Stack()
         curr_pos = _CellPosition(self._start_cell.row, self._start_cell.col)
 
-        self._mark_path(curr_pos.row, curr_pos.col)
-        path.push(curr_pos)
+        # self._mark_path(curr_pos.row, curr_pos.col)
+        # path.push(curr_pos)
 
-        for _ in range(5):
+        while True:
             if self._valid_move(curr_pos.row - 1, curr_pos.col):
-                curr_pos.row, curr_pos.col = curr_pos.row - 1, curr_pos.col
+                path.push(deepcopy(curr_pos))
                 self._mark_path(curr_pos.row, curr_pos.col)
-                path.push(curr_pos)
+                curr_pos.row, curr_pos.col = curr_pos.row - 1, curr_pos.col
                 print("up..")
             elif self._valid_move(curr_pos.row, curr_pos.col + 1):
-                curr_pos.row, curr_pos.col = curr_pos.row, curr_pos.col + 1
+                path.push(deepcopy(curr_pos))
                 self._mark_path(curr_pos.row, curr_pos.col)
-                path.push(curr_pos)
+                curr_pos.row, curr_pos.col = curr_pos.row, curr_pos.col + 1
                 print("right..")
             elif self._valid_move(curr_pos.row + 1, curr_pos.col):
-                curr_pos.row, curr_pos.col = curr_pos.row + 1, curr_pos.col
+                path.push(deepcopy(curr_pos))
                 self._mark_path(curr_pos.row, curr_pos.col)
-                path.push(curr_pos)
+                curr_pos.row, curr_pos.col = curr_pos.row + 1, curr_pos.col
                 print("down..")
             elif self._valid_move(curr_pos.row, curr_pos.col - 1):
-                curr_pos.row, curr_pos.col = curr_pos.row, curr_pos.col - 1
+                path.push(deepcopy(curr_pos))
                 self._mark_path(curr_pos.row, curr_pos.col)
-                path.push(curr_pos)
+                curr_pos.row, curr_pos.col = curr_pos.row, curr_pos.col - 1
                 print("left..")
             else:
                 print("wrong..")
                 self._mark_tried(curr_pos.row, curr_pos.col)
-                curr_pos = path.pop()
+                old_pos = path.pop()
+                curr_pos.row, curr_pos.col = old_pos.row, old_pos.col
                 print(curr_pos)
-                curr_pos = path.pop()
-                print(curr_pos)
+
             
             if self._exit_found(curr_pos.row, curr_pos.col):
+                self._mark_path(curr_pos.row, curr_pos.col)
                 return True
+        
             print(self, flush=True)
 
 
