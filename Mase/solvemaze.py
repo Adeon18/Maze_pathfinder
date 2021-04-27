@@ -11,7 +11,6 @@ def main():
         print("Path not found....")
     print(maze)
     maze.reset()
-    print(maze)
 
 
 def build_maze(filename):
@@ -50,3 +49,15 @@ def read_value_pair(infile):
 
 # Call the main routine to execute the program.
 main()
+
+# **oo* 
+# *o*o* 
+# *xxx* 
+# *x*xx 
+# _x*** 
+
+# * * o o * 
+# * _ * o * 
+# * _ * o * 
+# * _ * o o 
+# _ _ * * * 

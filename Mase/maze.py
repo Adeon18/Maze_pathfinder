@@ -6,6 +6,7 @@ from lliststack import Stack
 
 class Maze:
     """Define constants to represent contents of the maze cells."""
+
     MAZE_WALL = "*"
     PATH_TOKEN = "x"
     TRIED_TOKEN = "o"
@@ -26,22 +27,24 @@ class Maze:
 
     def set_wall(self, row, col):
         """Fills the indicated cell with a "wall" marker."""
-        assert row >= 0 and row < self.num_rows() and \
-               col >= 0 and col < self.num_cols(), "Cell index out of range."
+        assert (
+            row >= 0 and row < self.num_rows() and col >= 0 and col < self.num_cols()
+        ), "Cell index out of range."
         self._maze_cells[row, col] = self.MAZE_WALL
 
     def set_start(self, row, col):
         """Sets the starting cell position."""
-        assert row >= 0 and row < self.num_rows() and \
-               col >= 0 and col < self.num_cols(), "Cell index out of range."
+        assert (
+            row >= 0 and row < self.num_rows() and col >= 0 and col < self.num_cols()
+        ), "Cell index out of range."
         self._start_cell = _CellPosition(row, col)
 
     def set_exit(self, row, col):
         """Sets the exit cell position."""
-        assert row >= 0 and row < self.num_rows() and \
-               col >= 0 and col < self.num_cols(), "Cell index out of range."
+        assert (
+            row >= 0 and row < self.num_rows() and col >= 0 and col < self.num_cols()
+        ), "Cell index out of range."
         self._exit_cell = _CellPosition(row, col)
-
 
     def find_path(self):
         """
@@ -82,40 +85,48 @@ class Maze:
                 curr_pos.row, curr_pos.col = old_pos.row, old_pos.col
                 # print(curr_pos)
 
-            
             if self._exit_found(curr_pos.row, curr_pos.col):
                 self._mark_path(curr_pos.row, curr_pos.col)
                 return True
-            if curr_pos.row == self._start_cell.row and curr_pos.col == self._start_cell.col:
+            if (
+                curr_pos.row == self._start_cell.row
+                and curr_pos.col == self._start_cell.col
+            ):
                 self._mark_tried(curr_pos.row, curr_pos.col)
                 return False
             # print(self, flush=True)
-
 
     def reset(self):
         """Resets the maze by removing all "path" and "tried" tokens."""
         for i in range(self.num_rows()):
             for j in range(self.num_cols()):
-                if self._maze_cells[i, j] == self.TRIED_TOKEN or self._maze_cells[i, j] == self.PATH_TOKEN:
+                if (
+                    self._maze_cells[i, j] == self.TRIED_TOKEN
+                    or self._maze_cells[i, j] == self.PATH_TOKEN
+                ):
                     self._maze_cells[i, j] = None
 
     def __str__(self):
         """Returns a text-based representation of the maze."""
-        output = ''
+        output = ""
         for i in range(self.num_rows()):
             for j in range(self.num_cols()):
                 if self._maze_cells[i, j] != None:
-                    output += str(self._maze_cells[i, j])
+                    output += str(self._maze_cells[i, j]) + " "
                 else:
-                    output += "_"
-            output += ' \n'
-        return output
+                    output += "_ "
+            output += "\n"
+        return output[:-1]
 
     def _valid_move(self, row, col):
         """Returns True if the given cell position is a valid move."""
-        return row >= 0 and row < self.num_rows() \
-               and col >= 0 and col < self.num_cols() \
-               and self._maze_cells[row, col] is None
+        return (
+            row >= 0
+            and row < self.num_rows()
+            and col >= 0
+            and col < self.num_cols()
+            and self._maze_cells[row, col] is None
+        )
 
     def _exit_found(self, row, col):
         """Helper method to determine if the exit was found."""
@@ -132,10 +143,11 @@ class Maze:
 
 class _CellPosition(object):
     """Private storage class for holding a cell position."""
+
     def __init__(self, row, col):
         self.row = row
         self.col = col
-    
+
     def __str__(self):
         """
         String representation of a pos
